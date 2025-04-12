@@ -1,0 +1,37 @@
+server:
+  port: 8085
+
+spring:
+  profiles:
+    active: dev # 环境设置
+
+  application:
+      name: Adminservice
+
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        cluster-name: BJ  #集群名称
+    openfeign:
+      httpclient:
+        enabled: true # 支持HttpClient的开关
+        max-connections: 200 # 最大连接数
+        max-connections-per-route: 50 # 单个路径的最大连接数
+
+  jackson:
+    time-zone: America/Los_Angeles
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pizzahut?serverTimezone=America/Los_Angeles&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: root
+    password: "f25012501"
+
+
+mybatis:
+  type-aliases-package: com.example.feign_api.Pojo
+  configuration:
+    map-underscore-to-camel-case: true
+

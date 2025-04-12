@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>F:/PizzaHutTakeOut/PizzaHut - db/PizzaHut/back_end/feign_api</OriginalElement>
+  <nodes>
+    <node x="118.0" y="1853.0">com.example.feign_api.Message.Emit.TemplateCardsMessage</node>
+    <node x="660.0" y="1853.0">com.example.feign_api.Message.Emit.CustomersMessage</node>
+    <node x="-120.0" y="2092.0">com.example.feign_api.config.DefaultFeignConfiguration</node>
+    <node x="-120.0" y="1853.0">com.example.feign_api.Message.Receive.OrderStateMessage</node>
+    <node x="405.0" y="1853.0">com.example.feign_api.Message.Emit.BackupMessage</node>
+    <node x="760.0" y="-14.0">com.example.feign_api.Message.Receive.UseCardMessage</node>
+    <node x="122.0" y="-14.0">com.example.feign_api.Pojo.订单</node>
+    <node x="1695.0" y="-14.0">com.example.feign_api.Pojo.商品</node>
+    <node x="723.0" y="1145.0">com.example.feign_api.Message.Emit.OrderDetailMessage</node>
+    <node x="-120.0" y="1145.0">com.example.feign_api.Message.Emit.Element.OrderDish</node>
+    <node x="1610.0" y="1853.0">com.example.feign_api.Message.Receive.SimpleMessage</node>
+    <node x="1010.0" y="-14.0">com.example.feign_api.Pojo.用户</node>
+    <node x="-120.0" y="-14.0">com.example.feign_api.Message.Emit.Element.Order</node>
+    <node x="122.0" y="1145.0">com.example.feign_api.Message.Emit.NavMessage</node>
+    <node x="911.0" y="1853.0">com.example.feign_api.Message.Emit.DeliversMessage</node>
+    <node x="1832.0" y="1545.0">com.example.feign_api.Message.Receive.UpdateAddressMessage</node>
+    <node x="1819.0" y="1853.0">com.example.feign_api.clients.CustomerClients</node>
+    <node x="1901.0" y="-14.0">com.example.feign_api.Pojo.配送员</node>
+    <node x="1391.0" y="1853.0">com.example.feign_api.Message.Emit.CardMessage</node>
+    <node x="1477.0" y="-14.0">com.example.feign_api.Message.Emit.Element.Card</node>
+    <node x="536.0" y="-14.0">com.example.feign_api.Pojo.门店</node>
+    <node x="498.0" y="1545.0">com.example.feign_api.Message.Emit.ShopDishesMessage</node>
+    <node x="1278.0" y="1545.0">com.example.feign_api.Message.Receive.InsertOrderMessage</node>
+    <node x="867.4592147704418" y="-150.10036863270625">com.example.feign_api.FeignApiApplication</node>
+    <node x="1036.0" y="1545.0">com.example.feign_api.Message.Emit.DishMessage</node>
+    <node x="1443.0" y="1145.0">com.example.feign_api.Message.Emit.BuyDishesMessage</node>
+    <node x="1240.0" y="-14.0">com.example.feign_api.Message.Emit.CustomerMessage</node>
+    <node x="1555.0" y="1545.0">com.example.feign_api.Message.Receive.DealShopDishesMessage</node>
+    <node x="-120.0" y="1545.0">com.example.feign_api.Pojo.管理员</node>
+    <node x="1158.0" y="1853.0">com.example.feign_api.Message.Emit.OrderMessage</node>
+    <node x="1778.0" y="1145.0">com.example.feign_api.Pojo.备份记录</node>
+    <node x="86.0" y="1545.0">com.example.feign_api.Pojo.会员等级</node>
+    <node x="1088.0" y="1145.0">com.example.feign_api.Message.Receive.CustomerCardMessage</node>
+    <node x="1996.0" y="1145.0">com.example.feign_api.Message.Receive.Element.Payment</node>
+    <node x="459.0" y="1145.0">com.example.feign_api.Message.Emit.PostMessage</node>
+    <node x="778.0" y="1545.0">com.example.feign_api.Message.Emit.AddressesMessage</node>
+    <node x="292.0" y="1545.0">com.example.feign_api.Pojo.优惠券</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="分层" zoom="0.31420215938303364" showDependencies="false" x="975.304959785522" y="596.1337890624991" />
+  <SelectedNodes />
+  <Categories>
+    <Category>内部类</Category>
+    <Category>字段</Category>
+    <Category>方法</Category>
+    <Category>构造函数</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
