@@ -41,7 +41,7 @@ public class AdminController {
     @GetMapping("/deliveries")
     public DeliversMessage displayAllDelivers(){return adminService.searchAllDelivers();}
     @PostMapping("/updateproduct")
-    public PostMessage alterproduct(@RequestBody Order order){return adminService.updateOrder(order);}
+    public PostMessage alterproduct(@RequestBody OrderEntity order){return adminService.updateOrder(order);}
     @GetMapping("/deleteproduct/{ID}")
     public PostMessage removeproduct(@PathVariable String ID){return adminService.deleteOrder(ID);}
 

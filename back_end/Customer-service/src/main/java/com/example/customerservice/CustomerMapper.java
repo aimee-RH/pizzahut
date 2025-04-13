@@ -1,15 +1,21 @@
 package com.example.customerservice;
-import com.example.feign_api.Pojo.Order;
+import com.example.feign_api.Message.Emit.Element.Order;
 import org.apache.ibatis.annotations.*;
 import com.example.feign_api.Message.Emit.Element.*;
 import com.example.feign_api.Pojo.*;
+
+import java.time.LocalTime;
 import java.util.Date;
 
 @Mapper
 public interface CustomerMapper
 {
     //----------------------------------user----------------------------------
-    @Select("select * from user where id = #{id}")
+    @Select("SELECT * FROM user WHERE id = #{id}")
+    @Results({
+            @Result(property = "membershipLevel", column = "membership_level"),
+            @Result(property = "membershipExpiry", column = "membership_expiry")
+    })
     User queryCustomerByID(@Param("id") String id);
 
     @Select("SELECT * FROM user WHERE id = #{id} AND password = #{password}")
@@ -32,8 +38,6 @@ public interface CustomerMapper
 
     //----------------------------------address----------------------------------
     @Select("call queryAddressByID(#{ID})")
-
-
     String[] queryAddressesByID(String ID);
     @Delete("delete FROM user_address where user_id = #{ID}")
     void deleteAddressByID(String ID);
@@ -41,20 +45,37 @@ public interface CustomerMapper
     void insertAddress(String ID,String addr);
 
     //---------------------------------membership_level---------------------------------
-    @Select("SELECT * FROM membership_level where id = #{ID}")
-    MembershipLevel queryLevelByID(String ID);
+
+
+
+    @Select("SELECT * FROM membership_level WHERE id = #{id}")
+    MembershipLevel queryLevelByID(@Param("id") String id);
+
     @Select("call queryDiscountByCustomerID(#{ID})")
     float queryDiscountByCustomerID(String ID);
 
     //----------------------------------product----------------------------------
-    @Select("call queryAllDish()")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "category", column = "category"),
+            @Result(property = "originalPrice", column = "original_price"),
+            @Result(property = "description", column = "description")
+    })
+    @Select("CALL queryAllDish()")
     Product[] queryAllDish();
 
-    //----------------------------------coupon----------------------------------
-    @Select("select id,type,amount,shop_id,shop_name from coupon " +
-            "join (select coupon_id,shop_id from user_coupon where user_id = #{ID})a on a.coupon_id = id " +
-            "join (select id,name as shop_name from shop)b on b.id = a.shop_id")
+
+    @Select("select coupon.id as id, type, amount, shop_id, shop_name " +
+            "from coupon " +
+            "join (select coupon_id, shop_id from user_coupon where user_id = #{ID}) a " +
+            "on a.coupon_id = coupon.id " +
+            "join (select id, name as shop_name from shop) b " +
+            "on b.id = a.shop_id")
     Card[] queryCardByCustomerID(String ID);
+
+
+
     @Select("select amount from coupon where id = #{ID}")
     float queryCardMoneyByID(String ID);
     @Delete("delete from user_coupon where user_id = #{customerID} and coupon_id = #{cardID} and shop_id = #{shopID}")
@@ -64,9 +85,9 @@ public interface CustomerMapper
     Order[] queryOrderByCustomerID(String ID);
     @Select("select GenerateOrderID()")
     String queryNewOrderID();
-    @Insert("call insertOrder(#{id},#{user},#{address},#{shop},#{总amount},#{备注},#{用券},#{特权})")
-    void insertOrder(Order order);
-    @Select("call queryTodayPrivilegeByUerID(#{ID})")
+    @Insert("call insertOrder(#{id},#{user},#{address},#{shop},#{totalAmount},#{note},#{couponUsed},#{privilege})")
+    void insertOrder(OrderEntity order);
+    @Select("call queryTodayPrivilegeByUserID(#{ID})")
     boolean queryTodayPrivilegeByCustomerID(String ID);
     @Delete("delete from order where id = #{ID}")
     void deleteOrderByID(String ID);
@@ -78,8 +99,9 @@ public interface CustomerMapper
     void insertOrderDish(String orderID,String dishID,int num,float money);
 
     //----------------------------------shop----------------------------------
-    @Select("call queryAvailableShop()")
-    Shop[] queryAvailableShop();
+    @Select("CALL queryAvailableShop(#{now})")
+    Shop[] queryAvailableShop(LocalTime now);
+
     @Select("call queryShopByID(#{ID})")
     Shop queryShopByID(String ID);
 

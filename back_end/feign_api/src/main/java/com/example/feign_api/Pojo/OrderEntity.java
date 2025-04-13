@@ -2,7 +2,7 @@ package com.example.feign_api.Pojo;
 
 import java.util.Date;
 
-public class Order {
+public class OrderEntity {
     private String id;
     private String user;
     private String address;
@@ -15,7 +15,7 @@ public class Order {
     private Date orderTime;
     private Float totalAmount;
 
-    public Order(String id, String user, String address, String shop, Float totalAmount, String note, String couponUsed, String privilege) {
+    public OrderEntity(String id, String user, String address, String shop, Float totalAmount, String note, String couponUsed, String privilege) {
         this.id = id;
         this.user = user;
         this.address = address;

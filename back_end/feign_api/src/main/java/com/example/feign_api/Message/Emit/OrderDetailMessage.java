@@ -1,20 +1,21 @@
 package com.example.feign_api.Message.Emit;
 
-import com.example.feign_api.Pojo.delivery_person;
-import com.example.feign_api.Pojo.shop;
+import com.example.feign_api.Pojo.DeliveryPerson;
+import com.example.feign_api.Pojo.Shop;
 import com.example.feign_api.Message.Emit.Element.OrderDish;
 
 public class OrderDetailMessage {
     OrderDish[] list;
-    shop shop;
-    delivery_person deliver;
+    Shop shop;
+    DeliveryPerson deliver;
 
-    public OrderDetailMessage(OrderDish[] list, delivery_person deliver) {
+    public OrderDetailMessage(OrderDish[] list, DeliveryPerson deliver) {
         this.list = list;
         this.deliver = deliver;
     }
 
-    public OrderDetailMessage(OrderDish[] list, shop shop, delivery_person deliver) {
+    public
+    OrderDetailMessage(OrderDish[] list, Shop shop, DeliveryPerson deliver) {
         this.list = list;
         this.shop = shop;
         this.deliver = deliver;
@@ -28,19 +29,19 @@ public class OrderDetailMessage {
         this.list = list;
     }
 
-    public shop getShop() {
+    public Shop getShop() {
         return shop;
     }
 
-    public void setShop(shop shop) {
+    public void setShop(Shop shop) {
         this.shop = shop;
     }
 
-    public delivery_person getDeliver() {
+    public DeliveryPerson getDeliver() {
         return deliver;
     }
 
-    public void setDeliver(delivery_person deliver) {
+    public void setDeliver(DeliveryPerson deliver) {
         this.deliver = deliver;
     }
 }

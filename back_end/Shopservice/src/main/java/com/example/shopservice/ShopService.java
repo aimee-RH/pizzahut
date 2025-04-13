@@ -4,6 +4,7 @@ import com.example.feign_api.Message.Receive.*;
 import com.example.feign_api.Message.Emit.*;
 import com.example.feign_api.Pojo.*;
 import com.example.feign_api.clients.CustomerClients;
+import com.example.feign_api.converter.OrderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,10 @@ public class ShopService {
 
     //----------------------------------登录----------------------------------
     public PostMessage shopLogin(Shop shop) {
-        Shop Account = shopMapper.queryShopByID(shop.getAccount());
-        if (Account == null)
-            return new PostMessage(0, "account输入错误");
-        else if (!Account.getPassword().equals(shop.getPassword()))
+        Shop id = shopMapper.queryShopByID(shop.getId());
+        if (id == null)
+            return new PostMessage(0, "id输入错误");
+        else if (!id.getPassword().equals(shop.getPassword()))
             return new PostMessage(0, "password输入错误");
         else
             return new PostMessage(1, "登录成功");
@@ -29,7 +30,7 @@ public class ShopService {
         String newID = null;
         try{
             newID = shopMapper.queryNewShopID();
-            shop.setAccount(newID);
+            shop.setId(newID);
             shopMapper.insertShop(shop);
         }
         catch (Exception e){
@@ -39,8 +40,8 @@ public class ShopService {
     }
     public PostMessage shopAlterPassword(Shop shop){
         try {
-            if(!shopMapper.queryExistShopByID(shop.getAccount())){
-                return new PostMessage(0, "account不存在");
+            if(!shopMapper.queryExistShopByID(shop.getId())){
+                return new PostMessage(0, "id不存在");
             }
             shopMapper.updateShopPasswordByID(shop);
         }
@@ -95,7 +96,8 @@ public class ShopService {
     }
     //----------------------------------订单列表----------------------------------
     public OrderMessage searchOrder(String id) {
-        return new OrderMessage(shopMapper.queryOrderByShopID(id));
+        return new OrderMessage(OrderConverter.convertList(shopMapper.queryOrderByShopID(id)));
+
     }
     public OrderDetailMessage searchOrderDetail(String orderID, String deliverID) {
         return customerClients.searchOrderDetail(orderID,"0",deliverID);

@@ -4,7 +4,7 @@ import com.example.feign_api.Message.Emit.*;
 import com.example.feign_api.Message.Receive.SimpleMessage;
 import com.example.feign_api.Pojo.Product;
 import com.example.feign_api.Pojo.Admin;
-import com.example.feign_api.Pojo.Order;
+import com.example.feign_api.Pojo.OrderEntity;
 import com.example.feign_api.clients.CustomerClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,7 +96,7 @@ public class AdminService {
     //----------------------------------订单管理----------------------------------
     public OrderMessage searchAllOrder() {return new OrderMessage(adminMapper.queryAllOrder());}
     public DeliversMessage searchAllDelivers(){return new DeliversMessage(adminMapper.queryAllDelivers());}
-    public PostMessage updateOrder(Order Order){
+    public PostMessage updateOrder(OrderEntity Order){
         try{
             adminMapper.updateOrderByID(Order.getId(), Order.getDeliveryPerson(), Order.getDeliveryStatus());
         }

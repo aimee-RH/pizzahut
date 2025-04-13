@@ -1,19 +1,19 @@
 package com.example.feign_api.Message.Emit;
 
-import com.example.feign_api.Pojo.coupon;
+import com.example.feign_api.Pojo.Coupon;
 
 public class TemplateCardsMessage {
-    coupon[] cards;
+    Coupon[] cards;
 
-    public TemplateCardsMessage(coupon[] cards) {
+    public TemplateCardsMessage(Coupon[] cards) {
         this.cards = cards;
     }
 
-    public coupon[] getCards() {
+    public Coupon[] getCards() {
         return cards;
     }
 
-    public void setCards(coupon[] cards) {
+    public void setCards(Coupon[] cards) {
         this.cards = cards;
     }
 }

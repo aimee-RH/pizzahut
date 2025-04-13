@@ -15,13 +15,13 @@ public class DeliverController {
 
     //----------------------------------登录----------------------------------
     @PostMapping("/login")
-    public PostMessage deliverLogin(@RequestBody delivery_person deliver) {return deliverService.deliverLogin(deliver);}
+    public PostMessage deliverLogin(@RequestBody DeliveryPerson deliver) {return deliverService.deliverLogin(deliver);}
 
     @PostMapping("/register")
-    public PostMessage deliverRegister(@RequestBody delivery_person deliver){return deliverService.deliverRegister(deliver);}
+    public PostMessage deliverRegister(@RequestBody DeliveryPerson deliver){return deliverService.deliverRegister(deliver);}
 
     @PostMapping("/alterPassword")
-    public PostMessage deliverAlterPassword(@RequestBody delivery_person deliver) {return deliverService.deliverAlterPassword(deliver);}
+    public PostMessage deliverAlterPassword(@RequestBody DeliveryPerson deliver) {return deliverService.deliverAlterPassword(deliver);}
 
     @GetMapping("/nav/{ID}")
     public String deliverNav(@PathVariable String ID){return deliverService.deliverNav(ID);}
@@ -45,11 +45,11 @@ public class DeliverController {
     }
     //----------------------------------配送员信息----------------------------------
     @GetMapping("/info/{ID}")
-    public delivery_person searchInfo(@PathVariable String ID){
+    public DeliveryPerson searchInfo(@PathVariable String ID){
         return deliverService.searchInfo(ID);
     }
     @PostMapping("/alterInfo")
-    public PostMessage updateDeliverInfo(@RequestBody delivery_person deliver){
+    public PostMessage updateDeliverInfo(@RequestBody DeliveryPerson deliver){
         return deliverService.updateDeliverInfo(deliver);
     }
 }

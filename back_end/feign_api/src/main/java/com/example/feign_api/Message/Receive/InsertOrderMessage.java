@@ -1,11 +1,11 @@
 package com.example.feign_api.Message.Receive;
 
-import com.example.feign_api.Pojo.Order;
+import com.example.feign_api.Pojo.OrderEntity;
 import com.example.feign_api.Message.Receive.Element.Payment;
 
 public class InsertOrderMessage {
     Payment[] paymentList;
-    Order orderList;
+    OrderEntity orderList;
 
     public Payment[] getPaymentList() {
         return paymentList;
@@ -15,11 +15,11 @@ public class InsertOrderMessage {
         this.paymentList = paymentList;
     }
 
-    public Order getOrderList() {
+    public OrderEntity getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(Order orderList) {
+    public void setOrderList(OrderEntity orderList) {
         this.orderList = orderList;
     }
 }

@@ -12,11 +12,11 @@ spring:
         cluster-name: BJ  #集群名称
 
   jackson:
-    time-zone: GMT+8
+    time-zone: America/Los_Angeles
     date-format: yyyy-MM-dd HH:mm:ss
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/PizzaHut?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/pizzahut?serverTimezone=America/Los_Angeles&useSSL=false&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: PizzaHutUser
     password: "f25012501"

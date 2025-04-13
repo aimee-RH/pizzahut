@@ -1,4 +1,53 @@
 <script setup>
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { adminStore } from '@/store/adminStore.js'
+import adminAxios from '@/axios/adminAxios.js'
+
+const store = adminStore()
+const router = useRouter()
+
+const id = ref(store.adminID || '')
+const password = ref('')
+const loading = ref(false)
+
+const login = async () => {
+  const trimmedID = id.value.trim()
+  const trimmedPassword = password.value.trim()
+
+  if (!trimmedID) {
+    ElMessage.warning('账号不能为空')
+    return
+  }
+  if (!trimmedPassword) {
+    ElMessage.warning('密码不能为空')
+    return
+  }
+
+  loading.value = true
+  try {
+    const res = await adminAxios.post('/login', {
+      账号: trimmedID,
+      密码: trimmedPassword
+    })
+
+    if (String(res?.data?.code) === '1') {
+      store.alterAdminID(trimmedID)
+      router.push('/admin/menu')
+    } else {
+      ElMessage.warning(res?.data?.msg || '登录失败')
+    }
+  } catch (err) {
+    ElMessage.error('登录请求异常')
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+</script>
+
+<!-- <script setup>
 import { ref, onBeforeMount } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -45,7 +94,7 @@ function login() {
             })
     }
 }
-</script>
+</script> -->
 
 <template>
     <div class="box">
@@ -55,7 +104,7 @@ function login() {
             <form @submit.prevent>
                 <input type="text" class="acc" placeholder="账号" v-model="id" />
                 <input type="password" class="acc" placeholder="密码" v-model="password">
-                <button class="submit" type="primary" @click="login">
+                <button class="submit" type="button" @click="login">
                     <span v-if="!loading">确认</span>
                     <span v-else>登录中...</span>
                 </button>

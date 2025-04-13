@@ -127,6 +127,7 @@ function deleteOrder(id) {
     </el-table>
   </div>
 
+
   <el-dialog title="订单详情" v-model="dialogFormVisible" center>
     <h1 class="title">菜品明细</h1>
     <el-table :data="list" stripe style="width: 100%">

@@ -3,7 +3,7 @@ package com.example.feign_api.Pojo;
 import java.sql.Time;
 
 public class Shop {
-    private String account;
+    private String id;
     private String name;
     private String address;
     private String phone;
@@ -11,12 +11,12 @@ public class Shop {
     private Time openTime;
     private Time closeTime;
 
-    public String getAccount() {
-        return account;
+    public String getId() {
+        return id;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -70,7 +70,7 @@ public class Shop {
     @Override
     public String toString() {
         return "Shop{" +
-                "account='" + account + '\'' +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +

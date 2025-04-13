@@ -9,8 +9,8 @@ public class OrderMessage {
         this.orders = orders;
     }
 
-    public OrderMessage(com.example.feign_api.Pojo.Order[] orders) {
-    }
+//    public OrderMessage(com.example.feign_api.Pojo.Order[] orders) {
+//    }
 
     public Order[] getOrders() {
         return orders;

@@ -1,6 +1,7 @@
 package com.example.feign_api.Pojo;
 
-import javax.xml.crypto.Data;
+
+import java.util.Date;
 
 public class User {
     private String id;
@@ -9,7 +10,10 @@ public class User {
     private String phone;
     private String membershipLevel;
     private String password;
-    private Data membershipExpiry;
+    private Date membershipExpiry;
+
+    // getters 和 setters 都保留不变
+
 
     public String getId() {
         return id;
@@ -59,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public Data getMembershipExpiry() {
+    public Date getMembershipExpiry() {
         return membershipExpiry;
     }
 
-    public void setMembershipExpiry(Data membershipExpiry) {
+    public void setMembershipExpiry(Date membershipExpiry) {
         this.membershipExpiry = membershipExpiry;
     }
 }

@@ -9,6 +9,7 @@ public class OrderDish {
     String name;
     int number;
 
+
     float amount;
 
     public String getname() {

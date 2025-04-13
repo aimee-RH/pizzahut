@@ -3,11 +3,12 @@ package com.example.customerservice;
 import com.example.feign_api.Message.Receive.*;
 import com.example.feign_api.Message.Emit.*;
 import com.example.feign_api.Pojo.*;
-import com. example. feign_api. Message. Emit. Element. Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import lombok.Data;
@@ -23,13 +24,13 @@ public class CustomerService {
     //----------------------------------登录----------------------------------
     public PostMessage customerLogin(User customer) {
 
-        User User = customerMapper.queryCustomerByID(customer.getId());
+        User user = customerMapper.queryCustomerByID(customer.getId());
         System.out.println("登录参数: " + customer.getId() + " / " + customer.getPassword());
-        com.example.feign_api.Pojo.User user = customerMapper.queryCustomerByIDAndPassword(customer.getId(), customer.getPassword());
+        User user2 = customerMapper.queryCustomerByIDAndPassword(customer.getId(), customer.getPassword());
         System.out.println("数据库查出: " + user);
-        if (User == null)
+        if (user == null)
             return new PostMessage(0, "id输入错误");
-        else if (!User.getPassword().equals(customer.getPassword()))
+        else if (!user.getPassword().equals(customer.getPassword()))
             return new PostMessage(0, "password输入错误");
         else
             return new PostMessage(1, "登录成功");
@@ -58,20 +59,51 @@ public class CustomerService {
         }
         return new PostMessage(1,"password修改成功");
     }
+//    public NavMessage customerNav(String ID) {
+//        User User = customerMapper.queryCustomerByID(ID);
+//        MembershipLevel level = customerMapper.queryLevelByID(User.getMembershipLevel());
+//        return new NavMessage(User.getName(),User.getGender(), level.getId(), level.getLevel());
+//    }
+
     public NavMessage customerNav(String ID) {
-        User User = customerMapper.queryCustomerByID(ID);
-        MembershipLevel level = customerMapper.queryLevelByID(User.getMembershipLevel());
-        return new NavMessage(User.getName(),User.getGender(), level.getId(), level.getLevel());
+        User user = customerMapper.queryCustomerByID(ID);
+
+        if (user == null) {
+            throw new RuntimeException("用户不存在，ID = " + ID);
+        }
+
+        String membershipLevelId = user.getMembershipLevel();
+        System.out.println("等级"+membershipLevelId);
+        MembershipLevel level = customerMapper.queryLevelByID(membershipLevelId);
+
+        if (level == null) {
+            throw new RuntimeException("会员等级不存在，ID = " + membershipLevelId);
+        }
+
+        return new NavMessage(user.getName(), user.getGender(), level.getId(), level.getLevel());
     }
+
 
     //----------------------------------点餐----------------------------------
     public DishMessage searchDishes() {
         return new DishMessage(customerMapper.queryAllDish());
     }
+    //    public BuyDishesMessage searchBuyDishes(String ID) {
+//        return new BuyDishesMessage(customerMapper.queryAvailableShop(),
+//                customerMapper.queryDiscountByCustomerID(ID),customerMapper.queryTodayPrivilegeByCustomerID(ID));
+//    }
     public BuyDishesMessage searchBuyDishes(String ID) {
-        return new BuyDishesMessage(customerMapper.queryAvailableShop(),
-                customerMapper.queryDiscountByCustomerID(ID),customerMapper.queryTodayPrivilegeByCustomerID(ID));
+        // 获取洛杉矶当前时间
+        ZoneId zone = ZoneId.of("America/Los_Angeles");
+        LocalTime now = LocalTime.now(zone);
+
+        return new BuyDishesMessage(
+                customerMapper.queryAvailableShop(now), // 传入当前时间
+                customerMapper.queryDiscountByCustomerID(ID),
+                customerMapper.queryTodayPrivilegeByCustomerID(ID)
+        );
     }
+
     public AddressesMessage searchAddresses(String ID){
         return new AddressesMessage(customerMapper.queryAddressesByID(ID));
     }
@@ -95,28 +127,65 @@ public class CustomerService {
     public CardMessage searchCard(String ID) {
         return new CardMessage(customerMapper.queryCardByCustomerID(ID));
     }
-    public PostMessage customerCard(UseCardMessage ucm){
+
+    public PostMessage customerCard(UseCardMessage ucm) {
         try {
+            System.out.println("使用优惠券参数：CustomerID=" + ucm.getCustomerID() +
+                    ", CardID=" + ucm.getCardID() +
+                    ", FirstDish=" + ucm.getFirstDish() +
+                    ", SecondDish=" + ucm.getSecondDish() +
+                    ", Address=" + ucm.getAddress() +
+                    ", Shop=" + ucm.getShop());
+
             String newID = customerMapper.queryNewOrderID();
             float money = customerMapper.queryCardMoneyByID(ucm.getCardID());
-            Order order = new Order(newID,ucm.getCustomerID(), ucm.getAddress(),
-                    ucm.getShop(), money, ucm.getNote(),"是","否");
+
+            // 构造订单
+            OrderEntity order = new OrderEntity(newID, ucm.getCustomerID(), ucm.getAddress(),
+                    ucm.getShop(), money, ucm.getNote(), "Yes", "No");
             customerMapper.insertOrder(order);
-            if(ucm.getCardID() != "3"){
-                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1,money/2);
-                customerMapper.insertOrderDish(newID, ucm.getSecondDish(), 1,money/2);
-            }
-            else{
-                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1,money);
+
+            // 判断优惠券类型（ID为 "3" 是全额券）
+            if (!"3".equals(ucm.getCardID())) {
+                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1, money / 2);
+                customerMapper.insertOrderDish(newID, ucm.getSecondDish(), 1, money / 2);
+            } else {
+                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1, money);
             }
 
+            // 删除已使用的优惠券
             customerMapper.deleteCustomerCard(ucm.getCustomerID(), ucm.getCardID(), ucm.getShop());
+
+        } catch (Exception e) {
+            e.printStackTrace(); // 打印异常堆栈
+            return new PostMessage(0, "使用优惠券失败: " + e.getMessage());
         }
-        catch (Exception e){
-            return new PostMessage(0, e.getMessage());
-        }
+
         return new PostMessage(1, "优惠券使用成功");
     }
+
+//    public PostMessage customerCard(UseCardMessage ucm){
+//        try {
+//            String newID = customerMapper.queryNewOrderID();
+//            float money = customerMapper.queryCardMoneyByID(ucm.getCardID());
+//            Order order = new Order(newID,ucm.getCustomerID(), ucm.getAddress(),
+//                    ucm.getShop(), money, ucm.getNote(),"是","否");
+//            customerMapper.insertOrder(order);
+//            if(ucm.getCardID() != "3"){
+//                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1,money/2);
+//                customerMapper.insertOrderDish(newID, ucm.getSecondDish(), 1,money/2);
+//            }
+//            else{
+//                customerMapper.insertOrderDish(newID, ucm.getFirstDish(), 1,money);
+//            }
+//
+//            customerMapper.deleteCustomerCard(ucm.getCustomerID(), ucm.getCardID(), ucm.getShop());
+//        }
+//        catch (Exception e){
+//            return new PostMessage(0, e.getMessage());
+//        }
+//        return new PostMessage(1, "优惠券使用成功");
+//    }
 
     //----------------------------------订单----------------------------------
     public OrderMessage searchOrder(String ID) {

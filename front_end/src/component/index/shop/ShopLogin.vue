@@ -40,8 +40,8 @@ function login() {
     loading.value = true
     shopAxios.post("/login",
         {
-          账号: id.value,
-          密码: password.value
+          id: id.value,
+          password: password.value
         })
         .then((res) => {
           if (String(res.data.code) === '1') {

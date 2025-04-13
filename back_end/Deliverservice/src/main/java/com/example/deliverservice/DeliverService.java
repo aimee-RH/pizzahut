@@ -3,8 +3,11 @@ package com.example.deliverservice;
 import com.example.feign_api.Message.Receive.*;
 import com.example.feign_api.Message.Emit.*;
 import com.example.feign_api.Pojo.*;
+import com.example.feign_api.converter.OrderConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.feign_api.Message.Emit.Element.Order;
 
 @Service
 public class DeliverService {
@@ -13,20 +16,20 @@ public class DeliverService {
     DeliverMapper deliverMapper;
 
     //----------------------------------登录----------------------------------
-    public PostMessage deliverLogin(delivery_person deliver) {
-        delivery_person Account = deliverMapper.queryDeliverByID(deliver.get_account());
+    public PostMessage deliverLogin(DeliveryPerson deliver) {
+        DeliveryPerson Account = deliverMapper.queryDeliverByID(deliver.getAccount());
         if (Account == null)
             return new PostMessage(0, "账号输入错误");
-        else if (!Account.get_password().equals(deliver.get_password()))
+        else if (!Account.getPassword().equals(deliver.getPassword()))
             return new PostMessage(0, "密码输入错误");
         else
             return new PostMessage(1, "登录成功");
     }
-    public PostMessage deliverRegister(delivery_person deliver){
+    public PostMessage deliverRegister(DeliveryPerson deliver){
         String newID = null;
         try{
             newID = deliverMapper.queryNewDeliverID();
-            deliver.set_account(newID);
+            deliver.setAccount(newID);
             deliverMapper.insertDeliver(deliver);
         }
         catch (Exception e){
@@ -34,9 +37,9 @@ public class DeliverService {
         }
         return new PostMessage(1,newID);
     }
-    public PostMessage deliverAlterPassword(delivery_person deliver){
+    public PostMessage deliverAlterPassword(DeliveryPerson deliver){
         try {
-            if(!deliverMapper.queryExistDeliverByID(deliver.get_account())){
+            if(!deliverMapper.queryExistDeliverByID(deliver.getAccount())){
                 return new PostMessage(0, "账号不存在");
             }
             deliverMapper.updateDeliverPasswordByID(deliver);
@@ -47,12 +50,14 @@ public class DeliverService {
         return new PostMessage(1,"密码修改成功");
     }
     public String deliverNav(String ID) {
-        return deliverMapper.queryDeliverByID(ID).get_name();
+        return deliverMapper.queryDeliverByID(ID).getName();
     }
     //----------------------------------接单列表----------------------------------
     public OrderMessage searchOrder() {
-        return new OrderMessage(deliverMapper.queryUndeliveredOrder());
+        return new OrderMessage(OrderConverter.convertList(deliverMapper.queryUndeliveredOrder()));
     }
+
+
     public PostMessage receiveOrder(OrderStateMessage osm){
         try {
             deliverMapper.updateOrderDeliver(osm.getOrderID(),osm.getDeliverID());
@@ -65,7 +70,7 @@ public class DeliverService {
 
     //----------------------------------我的接单----------------------------------
     public OrderMessage searchHistory(String id) {
-        return new OrderMessage(deliverMapper.queryOrderByDeliverID(id));
+        return new OrderMessage(OrderConverter.convertList(deliverMapper.queryOrderByDeliverID(id)));
     }
     public PostMessage updateOrder(OrderStateMessage osm){
         try {
@@ -78,10 +83,10 @@ public class DeliverService {
     }
 
     //----------------------------------配送员信息----------------------------------
-    public delivery_person searchInfo(String ID){
+    public DeliveryPerson searchInfo(String ID){
         return deliverMapper.queryDeliverByID(ID);
     }
-    public PostMessage updateDeliverInfo(delivery_person deliver){
+    public PostMessage updateDeliverInfo(DeliveryPerson deliver){
         try{
             deliverMapper.updateDeliverInfoByID(deliver);
         }
