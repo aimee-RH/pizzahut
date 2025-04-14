@@ -81,8 +81,27 @@ public interface CustomerMapper
     @Delete("delete from user_coupon where user_id = #{customerID} and coupon_id = #{cardID} and shop_id = #{shopID}")
     void deleteCustomerCard(String customerID, String cardID, String shopID);
     //----------------------------------order----------------------------------
-    @Select("call queryOrderByCustomerID(#{ID})")
+//    @Select("call queryOrderByCustomerID(#{ID})")
+//    Order[] queryOrderByCustomerID(String ID);
+
+    @Select("CALL queryOrderByCustomerID(#{ID})")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "orderTime", column = "order_time"),
+            @Result(property = "user", column = "user_id"),
+            @Result(property = "address", column = "address"),
+            @Result(property = "shop", column = "shop_id"), // 👈 一定要有
+            @Result(property = "deliveryPersonName", column = "delivery_person_name"),
+            @Result(property = "shopName", column = "shop_name"),
+            @Result(property = "deliveryPerson", column = "delivery_person"),
+            @Result(property = "totalAmount", column = "total_amount"),
+            @Result(property = "deliveryStatus", column = "delivery_status"),
+            @Result(property = "note", column = "note"),
+            @Result(property = "couponUsed", column = "coupon_used"),
+            @Result(property = "privilege", column = "privilege")
+    })
     Order[] queryOrderByCustomerID(String ID);
+
     @Select("select GenerateOrderID()")
     String queryNewOrderID();
     @Insert("call insertOrder(#{id},#{user},#{address},#{shop},#{totalAmount},#{note},#{couponUsed},#{privilege})")
@@ -94,7 +113,13 @@ public interface CustomerMapper
 
     //---------------------------------order_product--------------------------------
     @Select("call queryOrderDishByOrderID(#{ID})")
+    @Results({
+            @Result(property = "dishName", column = "dish_name"),
+            @Result(property = "number", column = "number"),
+            @Result(property = "price", column = "price")
+    })
     OrderDish[] queryOrderDishByOrderID(String ID);
+
     @Insert("call insertOrderDish(#{orderID},#{dishID},#{num},#{money})")
     void insertOrderDish(String orderID,String dishID,int num,float money);
 
@@ -103,8 +128,16 @@ public interface CustomerMapper
     Shop[] queryAvailableShop(LocalTime now);
 
     @Select("call queryShopByID(#{ID})")
-    Shop queryShopByID(String ID);
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "address", column = "address"),
+            @Result(property = "phone", column = "phone"),
+            @Result(property = "openTime", column = "open_time"),
+            @Result(property = "closeTime", column = "close_time")
+    })
 
+    Shop queryShopByID(String ID);
     //---------------------------------shop_product---------------------------------
     @Select("call queryShopDishByShopID(#{shopID})")
     String[] queryShopDishByShopID(String shopID);

@@ -14,6 +14,12 @@ public class OrderEntity {
     private String privilege;
     private Date orderTime;
     private Float totalAmount;
+    private String shopName;
+    private String deliveryPersonName;
+
+
+
+
 
     public OrderEntity(String id, String user, String address, String shop, Float totalAmount, String note, String couponUsed, String privilege) {
         this.id = id;
@@ -24,6 +30,23 @@ public class OrderEntity {
         this.note = note;
         this.couponUsed = couponUsed;
         this.privilege = privilege;
+    }
+
+
+    public String getDeliveryPersonName() {
+        return deliveryPersonName;
+    }
+
+    public void setDeliveryPersonName(String deliveryPersonName) {
+        this.deliveryPersonName = deliveryPersonName;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public String getId() {

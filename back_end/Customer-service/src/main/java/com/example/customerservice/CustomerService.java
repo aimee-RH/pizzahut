@@ -1,5 +1,6 @@
 package com.example.customerservice;
 
+import com.example.feign_api.Message.Emit.Element.OrderDish;
 import com.example.feign_api.Message.Receive.*;
 import com.example.feign_api.Message.Emit.*;
 import com.example.feign_api.Pojo.*;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -191,12 +194,36 @@ public class CustomerService {
     public OrderMessage searchOrder(String ID) {
         return new OrderMessage(customerMapper.queryOrderByCustomerID(ID));
     }
-    public OrderDetailMessage searchOrderDetail(String orderID, String shopID, String deliverID){
-        if(shopID != "0")
-            return new OrderDetailMessage(customerMapper.queryOrderDishByOrderID(orderID),
-                    customerMapper.queryShopByID(shopID),customerMapper.queryDeliverByID(deliverID));
-        return new OrderDetailMessage(customerMapper.queryOrderDishByOrderID(orderID),customerMapper.queryDeliverByID(deliverID));
+    public OrderDetailMessage searchOrderDetail(String orderID, String shopID, String deliverID) {
+        System.out.println("==== 调用订单详情接口 ====");
+        System.out.println("传入参数：orderID = " + orderID + ", shopID = " + shopID + ", deliverID = " + deliverID);
+
+        // 查询菜品
+        OrderDish[] dishList = customerMapper.queryOrderDishByOrderID(orderID);
+        for (OrderDish dish : dishList) {
+            System.out.println("  - 菜名: " + dish.getDishName() + ", 数量: " + dish.getNumber() + ", 金额: " + dish.getAmount());
+        }
+
+
+        // 查询门店信息
+        Shop shop = null;
+        if (!"0".equals(shopID) && shopID != null && !"null".equals(shopID)) {
+            shop = customerMapper.queryShopByID(shopID);
+
+            System.out.println("门店信息查询结果：" + (shop != null ? shop.toString() : "null"));
+        } else {
+            System.out.println("shopID 为 0/null/null字符串，跳过门店查询");
+        }
+
+        // 查询配送员
+        DeliveryPerson deliver = customerMapper.queryDeliverByID(deliverID);
+        System.out.println("配送员信息: " + (deliver != null ? deliver.toString() : "null"));
+
+        // 返回封装数据
+        return new OrderDetailMessage(dishList, shop, deliver);
     }
+
+
     public PostMessage deleteOrder(SimpleMessage sm){
         System.out.println(sm.getData());
         try{

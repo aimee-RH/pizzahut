@@ -17,7 +17,7 @@ public class DeliverService {
 
     //----------------------------------登录----------------------------------
     public PostMessage deliverLogin(DeliveryPerson deliver) {
-        DeliveryPerson Account = deliverMapper.queryDeliverByID(deliver.getAccount());
+        DeliveryPerson Account = deliverMapper.queryDeliverByID(deliver.getId());
         if (Account == null)
             return new PostMessage(0, "账号输入错误");
         else if (!Account.getPassword().equals(deliver.getPassword()))
@@ -29,7 +29,7 @@ public class DeliverService {
         String newID = null;
         try{
             newID = deliverMapper.queryNewDeliverID();
-            deliver.setAccount(newID);
+            deliver.setId(newID);
             deliverMapper.insertDeliver(deliver);
         }
         catch (Exception e){
@@ -39,7 +39,7 @@ public class DeliverService {
     }
     public PostMessage deliverAlterPassword(DeliveryPerson deliver){
         try {
-            if(!deliverMapper.queryExistDeliverByID(deliver.getAccount())){
+            if(!deliverMapper.queryExistDeliverByID(deliver.getId())){
                 return new PostMessage(0, "账号不存在");
             }
             deliverMapper.updateDeliverPasswordByID(deliver);

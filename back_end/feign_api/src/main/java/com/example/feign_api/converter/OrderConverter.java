@@ -7,22 +7,22 @@ public class OrderConverter {
 
     public static Order convert(OrderEntity entity) {
         Order order = new Order();
-        order.setid(entity.getId());
-        order.setorder_time(entity.getOrderTime());
-        order.setuser(entity.getUser());
-        //order.setuser_name(entity.getUserName());
-        order.setaddress(entity.getAddress());
-        order.setshop(entity.getShop());
-        //order.setshop_name(entity.getShopName());
-        order.setdelivery_person(entity.getDeliveryPerson());
-        //order.setdelivery_person_name(entity.getDeliveryPersonName());
-        order.settotal_amount(entity.getTotalAmount());
-        order.setdelivery_status(entity.getDeliveryStatus());
-        order.setnote(entity.getNote());
-        order.setcoupon_used(entity.getCouponUsed());
-        order.setprivilege(entity.getPrivilege());
+        order.setId(entity.getId());
+        order.setOrderTime(entity.getOrderTime());
+        order.setUser(entity.getUser());
+        order.setAddress(entity.getAddress());
+        order.setShop(entity.getShop());
+        order.setShopName(entity.getShopName()); // ✅ 关键补充！
+        order.setDeliveryPersonName(entity.getDeliveryPersonName());
+        order.setDeliveryPerson(entity.getDeliveryPerson());
+        order.setTotalAmount(entity.getTotalAmount());
+        order.setDeliveryStatus(entity.getDeliveryStatus());
+        order.setNote(entity.getNote());
+        order.setCouponUsed(entity.getCouponUsed());
+        order.setPrivilege(entity.getPrivilege());
         return order;
     }
+
 
     public static Order[] convertList(OrderEntity[] entities) {
         Order[] orders = new Order[entities.length];

@@ -1,18 +1,18 @@
 package com.example.feign_api.Pojo;
 
 public class DeliveryPerson {
-    private String account;
+    private String id;
     private String name;
     private String gender;
     private String phone;
     private String password;
 
-    public String getAccount() {
-        return account;
+    public String getId() {
+        return id;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

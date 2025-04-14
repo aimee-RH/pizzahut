@@ -6,33 +6,31 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor //无参的构造方法
 public class OrderDish {
-    String name;
+    String dishName;
     int number;
-
-
     float amount;
 
-    public String getname() {
-        return name;
+    public String getDishName() {
+        return dishName;
     }
 
-    public void setname(String name) {
-        this.name = name;
+    public void setDishName(String name) {
+        this.dishName = name;
     }
 
-    public int getnumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setnumber(int number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
-    public float getamount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setamount(float amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 }
